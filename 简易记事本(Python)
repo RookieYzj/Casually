@@ -1,0 +1,72 @@
+import tkinter
+import datetime
+import time
+import os
+from tkinter import *
+
+root = tkinter.Tk()
+root.title('简易记事本')
+msgcontent1 = time.strftime("%Y-%m-%d ", time.localtime())
+
+## 保存按钮事件
+def saveText():
+    # 在内容上方加一行 显示保存文件的时间
+    msgcontent = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + \
+                 '  保存数据如下:\n\n'
+    str1 = text_msg.get('0.0', 'end')[:-1] #在获取文本时发现会多获取一个换行字符(\n)，所以要获取到倒数第二个字符，这样在最后的文件读写上文件名才不会错误
+    text_msg.delete('0.0', 'end')
+    text_msg.insert('end', msgcontent, 'green')
+    text_msg.insert('end', str1)
+    f1 = open(msgcontent1+".dat", "w+")
+    f1.write(str1)
+    f1.close()
+
+
+#读取按钮事件
+def readText():
+    text_msg.delete('0.0', 'end')
+    f2 = open(msgcontent1+".dat", "r+")
+    str2 = f2.read()
+    text_msg.insert('end', str2)
+    f2.close()
+
+def nameText():
+    str1 = text_msg.get('0.0', 'end')[:-1]#在获取文本时发现会多获取一个换行字符(\n)，所以要获取到倒数第二个字符，这样在最后的文件读写上文件名才不会错误
+    msgcontent1=str1
+    f1 = open(msgcontent1+ ".dat", "w+")
+    f1.close()
+
+
+
+#创建几个frame作为容器
+frame_left_center = tkinter.Frame(width=280, height=200, bg='white')
+frame_save = tkinter.Frame(width=140, height=40)
+frame_read = tkinter.Frame(width=140, height=40)
+frame_name = tkinter.Frame(width=100, height=20)
+
+##创建需要的几个元素
+text_msg = tkinter.Text(frame_left_center)
+str1 = StringVar()
+button_save = tkinter.Button(frame_save, text='保存文件', command=saveText)
+button_read = tkinter.Button(frame_read, text='读取文件', command=readText)
+button_name = tkinter.Button(frame_name, text='更改为文件名称', command=nameText)
+
+# 创建一个绿色的tag
+text_msg.tag_config('green', foreground='#008B00')
+
+# 使用grid设置各个容器位置
+frame_left_center.grid(row=1, column=0, padx=2, pady=5)
+frame_save.grid(row=2, column=0, sticky='W')
+frame_read.grid(row=2, column=0, sticky='E')
+frame_name.grid(row=2,column=0,sticky='N')
+# frame_left_top.grid_propagate(0)
+frame_left_center.grid_propagate(0)
+
+# 把元素填充进frame
+text_msg.grid()
+button_save.grid()
+button_read.grid()
+button_name.grid()
+
+# 主事件循环
+root.mainloop()
