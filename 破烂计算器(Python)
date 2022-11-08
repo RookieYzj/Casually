@@ -1,0 +1,63 @@
+import tkinter
+from tkinter import messagebox
+
+def guanyu():
+    messagebox.showinfo("关于作者","计算器 2022.09.24\n© 2022 SWE20002_Yzj。保留所有权利。\n若要了解如何参与 Windows 计算器，请在 GitHub 上查看该项目。")
+def add():
+    text3.set('+')
+def subtract():
+    text3.set('-')
+def multiply():
+    text3.set('*')
+def divide():
+    text3.set('/')
+win=tkinter.Tk()
+win.title("计算器")
+win.geometry('350x350')
+
+menubar= tkinter.Menu(win)#菜单放入win窗体
+win.config(menu=menubar)
+
+menu_guanyu=tkinter.Menu(menubar,tearoff=0)
+menu_guanyu.add_command(label='作者',command=guanyu)
+menu_exit=tkinter.Menu(menubar,tearoff=0)
+menu_is=tkinter.Menu(menubar,tearoff=0)
+menu_is.add_command(label='加法运算',command=add)
+menu_is.add_command(label='减法运算',command=subtract)
+menu_is.add_command(label='乘法运算',command=multiply)
+menu_is.add_command(label='除法运算',command=divide)
+menubar.add_cascade(label='选择运算方法',menu=menu_is)
+menubar.add_cascade(label='关于',menu=menu_guanyu)
+menubar.add_cascade(label='退出',command=win.quit)
+text1=tkinter.StringVar()
+text2=tkinter.StringVar()
+text3=tkinter.StringVar()
+sum=tkinter.StringVar()
+text3.set('请选择运算方法')
+
+text1input=tkinter.Entry(win,width=20)
+text2input=tkinter.Entry(win,width=20)
+text=tkinter.Label(win,textvariable=text3)
+
+def mclick():
+    if text3.get()=='+':
+        sum.set(eval(text1input.get()) + eval(text2input.get()))
+    elif text3.get()=='-':
+        sum.set(eval(text1input.get()) - eval(text2input.get()))
+    elif text3.get()=='*':
+        sum.set(eval(text1input.get()) * eval(text2input.get()))
+    elif text3.get()=='/':
+        if text1input.get()=='0':
+            sum.set('输入格式有误!')
+        else:
+            sum.set(eval(text1input.get()) / eval(text2input.get()))
+
+dengyu=tkinter.Button(win,text='=',command=mclick)
+textsum=tkinter.Entry(win,textvariable=sum,width=20)
+text1input.grid(row=0,column=0)
+text.grid(row=1,column=0)
+text2input.grid(row=2,column=0)
+dengyu.grid(row=3,column=0)
+textsum.grid(row=4,column=0)
+
+win.mainloop()
